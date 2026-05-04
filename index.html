@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSprunki - Aprendendo com Diversão</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div id="app">
+        <div class="background-layer"></div>
+
+        <!-- Back Button -->
+        <button id="backBtn" class="back-btn" style="display: none;">
+            <i data-lucide="arrow-left"></i> Voltar
+        </button>
+
+        <!-- Login Screen -->
+        <section id="loginScreen" class="screen active">
+            <div class="glass-panel" style="text-align: center; padding: 4rem; border-radius: 40px; background: rgba(255,255,255,0.8); backdrop-filter: blur(20px); border: 4px solid white; box-shadow: 0 20px 50px rgba(0,0,0,0.1);">
+                <h1 style="font-size: 3.5rem;">Olá! Qual o seu <span>nome</span>?</h1>
+                <input type="text" id="userNameInput" placeholder="Digite seu nome..." style="width: 100%; max-width: 400px; padding: 1.5rem; font-size: 1.5rem; border-radius: 20px; border: 3px solid var(--primary); margin: 2rem 0; text-align: center; outline: none; font-weight: 600;">
+                <br>
+                <button class="btn btn-math" style="min-width: 200px;" onclick="startGame()">
+                    <i data-lucide="play"></i>
+                    Vamos Jogar!
+                </button>
+            </div>
+        </section>
+
+        <!-- Main Screen -->
+        <section id="mainScreen" class="screen">
+            <h1>Edu<span>Sprunki</span></h1>
+            <p style="font-size: 1.5rem; margin-bottom: 3rem; font-weight: 500;">Escolha uma disciplina para começar!</p>
+            <div class="btn-container">
+                <button class="btn btn-math" onclick="showTopics('mathematics')">
+                    <i data-lucide="calculator"></i>
+                    Matemática
+                </button>
+                <button class="btn btn-portuguese" onclick="showTopics('portuguese')">
+                    <i data-lucide="book-open"></i>
+                    Português
+                </button>
+            </div>
+        </section>
+
+        <!-- Topics Screen -->
+        <section id="topicsScreen" class="screen">
+            <h1 id="subjectTitle">Tópicos</h1>
+            <div id="topicsGrid" class="topic-grid">
+                <!-- Topics will be injected here -->
+            </div>
+        </section>
+
+        <!-- Game Screen -->
+        <section id="gameScreen" class="screen">
+            <div id="scoreBadge" style="position: absolute; top: 2rem; right: 2rem; background: white; padding: 1rem 2rem; border-radius: 20px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 1rem; font-weight: 800; font-size: 1.5rem; color: var(--math); border: 3px solid var(--math);">
+                <i data-lucide="star" style="fill: var(--math);"></i>
+                <span id="scoreValue">0</span> Pontos
+            </div>
+            <h1 id="gameTopicTitle" style="font-size: 2rem; margin-bottom: 1rem;">Tópico</h1>
+            
+            <div class="game-stage" id="characterStage">
+                <!-- 7 characters -->
+                <div class="character-slot" data-index="0">
+                    <div class="concept-bubble"><i class="visual-icon"></i></div>
+                    <img src="assets/base.png" class="character-img" alt="Sprunki">
+                </div>
+                <div class="character-slot" data-index="1">
+                    <div class="concept-bubble"><i class="visual-icon"></i></div>
+                    <img src="assets/base.png" class="character-img" alt="Sprunki">
+                </div>
+                <div class="character-slot" data-index="2">
+                    <div class="concept-bubble"><i class="visual-icon"></i></div>
+                    <img src="assets/base.png" class="character-img" alt="Sprunki">
+                </div>
+                <div class="character-slot" data-index="3">
+                    <div class="concept-bubble"><i class="visual-icon"></i></div>
+                    <img src="assets/base.png" class="character-img" alt="Sprunki">
+                </div>
+                <div class="character-slot" data-index="4">
+                    <div class="concept-bubble"><i class="visual-icon"></i></div>
+                    <img src="assets/base.png" class="character-img" alt="Sprunki">
+                </div>
+                <div class="character-slot" data-index="5">
+                    <div class="concept-bubble"><i class="visual-icon"></i></div>
+                    <img src="assets/base.png" class="character-img" alt="Sprunki">
+                </div>
+                <div class="character-slot" data-index="6">
+                    <div class="concept-bubble"><i class="visual-icon"></i></div>
+                    <img src="assets/base.png" class="character-img" alt="Sprunki">
+                </div>
+            </div>
+
+            <div class="toolbox" id="toolbox">
+                <!-- Tools injected here -->
+            </div>
+        </section>
+
+        <!-- Concept Card (Visual Explanation) -->
+        <div id="conceptCard" class="concept-card">
+            <h2 id="cardTitle" class="card-title">Título</h2>
+            <div id="diagramContainer" class="diagram-container">
+                <!-- Diagrams will be injected here -->
+            </div>
+            <p class="close-hint">Clique em qualquer lugar para continuar jogando!</p>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
