@@ -266,6 +266,12 @@ h1 span {
     border-radius: 20px;
 }
 
+@media (max-width: 768px) {
+    .character-slot:nth-child(n+4) {
+        display: none;
+    }
+}
+
 /* Toolbox */
 .toolbox {
     width: 95%;

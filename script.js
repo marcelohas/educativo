@@ -256,6 +256,7 @@ let currentTopic = null;
 let userName = '';
 let score = 0;
 let transformationCount = 0;
+let maxTransformations = 7; // Default for desktop
 
 const characterFiles = [
     'brud.png', 'durple.png', 'garnold.png', 'gray.png', 
@@ -272,6 +273,13 @@ function startGame() {
     }
     userName = input.value.trim();
     
+    // Check if mobile to adjust game length
+    if (window.innerWidth <= 768) {
+        maxTransformations = 3;
+    } else {
+        maxTransformations = 7;
+    }
+
     // Set user name in all card tags
     document.querySelectorAll('.user-name-tag').forEach(tag => {
         tag.innerText = userName;
@@ -436,7 +444,7 @@ function applyToolToCharacter(slot) {
     
     transformationCount++;
     
-    if (transformationCount < 7) {
+    if (transformationCount < maxTransformations) {
         showConceptCard(currentTopic);
     } else {
         showQuizCard(currentTopic);
