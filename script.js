@@ -391,7 +391,12 @@ function setupToolbox(topic) {
         
         item.addEventListener('dragstart', handleDragStart);
         
-        // Mobile/Click support
+        // Mobile Touch Support
+        item.addEventListener('touchstart', handleTouchStart, { passive: false });
+        item.addEventListener('touchmove', handleTouchMove, { passive: false });
+        item.addEventListener('touchend', handleTouchEnd);
+        
+        // Click support (fallback)
         item.addEventListener('click', () => {
             document.querySelectorAll('.tool-item').forEach(t => t.classList.remove('selected'));
             item.classList.add('selected');
@@ -404,6 +409,102 @@ function setupToolbox(topic) {
 }
 
 let selectedToolForClick = null;
+let touchDraggedElement = null;
+let touchGhost = null;
+let touchStartX = 0;
+let touchStartY = 0;
+let touchMoved = false;
+
+function handleTouchStart(e) {
+    const item = e.target.closest('.tool-item');
+    if (!item) return;
+    
+    touchDraggedElement = item;
+    const touch = e.touches[0];
+    touchStartX = touch.clientX;
+    touchStartY = touch.clientY;
+    touchMoved = false;
+    
+    const rect = item.getBoundingClientRect();
+    
+    // Create ghost after a short delay or if moved, 
+    // but for immediate feedback we'll create it and hide it until moved?
+    // Actually, let's create it immediately but only show it after a tiny move
+    // to distinguish from a simple tap.
+    
+    touchGhost = item.cloneNode(true);
+    touchGhost.style.position = 'fixed';
+    touchGhost.style.left = rect.left + 'px';
+    touchGhost.style.top = rect.top + 'px';
+    touchGhost.style.width = rect.width + 'px';
+    touchGhost.style.height = rect.height + 'px';
+    touchGhost.style.zIndex = '10000';
+    touchGhost.style.opacity = '0'; // Start invisible
+    touchGhost.style.pointerEvents = 'none';
+    touchGhost.classList.add('dragging-ghost');
+    
+    document.body.appendChild(touchGhost);
+}
+
+function handleTouchMove(e) {
+    if (!touchDraggedElement || !touchGhost) return;
+    
+    const touch = e.touches[0];
+    const x = touch.clientX;
+    const y = touch.clientY;
+    
+    const dist = Math.hypot(x - touchStartX, y - touchStartY);
+    
+    if (dist > 10) { // Threshold for dragging
+        touchMoved = true;
+        touchGhost.style.opacity = '0.8';
+        touchDraggedElement.style.opacity = '0.5';
+        
+        // Update ghost position (centered on touch)
+        touchGhost.style.left = (x - touchGhost.offsetWidth / 2) + 'px';
+        touchGhost.style.top = (y - touchGhost.offsetHeight / 2) + 'px';
+        
+        // Check for hover effect on slots
+        const hoveredSlot = document.elementFromPoint(x, y)?.closest('.character-slot');
+        document.querySelectorAll('.character-slot').forEach(s => s.classList.remove('drag-over'));
+        if (hoveredSlot) {
+            hoveredSlot.classList.add('drag-over');
+        }
+        
+        // Only prevent default if we are actually dragging
+        if (e.cancelable) e.preventDefault();
+    }
+}
+
+function handleTouchEnd(e) {
+    if (!touchDraggedElement) return;
+    
+    if (!touchMoved) {
+        // It was a tap, trigger the click logic
+        touchDraggedElement.click();
+    } else {
+        const touch = e.changedTouches[0];
+        const x = touch.clientX;
+        const y = touch.clientY;
+        
+        const dropTarget = document.elementFromPoint(x, y)?.closest('.character-slot');
+        
+        if (dropTarget) {
+            applyToolToCharacter(dropTarget);
+        }
+    }
+    
+    // Cleanup
+    if (touchGhost) {
+        touchGhost.remove();
+        touchGhost = null;
+    }
+    if (touchDraggedElement) {
+        touchDraggedElement.style.opacity = '1';
+    }
+    touchDraggedElement = null;
+    document.querySelectorAll('.character-slot').forEach(s => s.classList.remove('drag-over'));
+}
 
 // Drag and Drop
 let draggedTool = null;
@@ -593,6 +694,28 @@ document.addEventListener('click', (e) => {
         conceptCard.classList.remove('active');
     }
 });
+
+// Section Navigation
+function showSection(sectionId) {
+    // Hide all main sections
+    document.querySelectorAll('.main-section').forEach(section => {
+        section.classList.remove('active');
+    });
+
+    // Show target section
+    if (sectionId === 'home') {
+        document.getElementById('homeSection').classList.add('active');
+    } else if (sectionId === 'prompts') {
+        document.getElementById('promptsSection').classList.add('active');
+    } else if (sectionId === 'docs') {
+        document.getElementById('documentationSection').classList.add('active');
+    }
+    
+    // Re-create icons for the new section content
+    if (window.lucide) {
+        lucide.createIcons();
+    }
+}
 
 // Initialize
 lucide.createIcons();

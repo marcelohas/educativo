@@ -8,105 +8,153 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
+    <nav class="main-nav">
+        <div class="nav-logo">Edu<span>Sprunki</span></div>
+        <ul class="nav-links">
+            <li><a href="#" onclick="showSection('home')"><i data-lucide="home"></i> Início</a></li>
+            <li><a href="#" onclick="showSection('prompts')"><i data-lucide="terminal"></i> Prompts</a></li>
+            <li><a href="#" onclick="showSection('docs')"><i data-lucide="book"></i> Documentação</a></li>
+        </ul>
+    </nav>
+
     <div id="app">
         <div class="background-layer"></div>
 
-        <!-- Back Button -->
-        <button id="backBtn" class="back-btn" style="display: none;">
-            <i data-lucide="arrow-left"></i> Voltar
-        </button>
+        <!-- Home Section -->
+        <section id="homeSection" class="main-section active">
+            <div class="glass-panel hero-panel">
+                <h1>Bem-vindo ao <span>EduSprunki</span></h1>
+                <p class="main-subtitle">Uma jornada educativa divertida e interativa!</p>
+                <div class="hero-actions">
+                    <button class="btn btn-math" onclick="showSection('docs')">
+                        <i data-lucide="play-circle"></i>
+                        Começar Agora
+                    </button>
+                </div>
+            </div>
+        </section>
 
-        <!-- Login Screen -->
-        <section id="loginScreen" class="screen active">
+        <!-- Prompts Section -->
+        <section id="promptsSection" class="main-section">
             <div class="glass-panel">
-                <h1>Olá! Qual o seu <span>nome</span>?</h1>
-                <input type="text" id="userNameInput" placeholder="Digite seu nome...">
-                <br>
-                <button class="btn btn-math" onclick="startGame()">
-                    <i data-lucide="play"></i>
-                    Vamos Jogar!
-                </button>
+                <h1>Guia de <span>Prompts</span></h1>
+                <p class="main-subtitle">Aprenda a criar e veja exemplos de prompts poderosos.</p>
+                <div class="prompts-grid">
+                    <a href="https://imcampos195.github.io/MyMumblings/Tutorial-PT-BR.html" target="_blank" class="prompt-card">
+                        <div class="prompt-card-icon"><i data-lucide="pen-tool"></i></div>
+                        <h3>Como escrever prompts</h3>
+                        <p>Aprenda técnicas e dicas para escrever prompts eficientes.</p>
+                        <span class="btn-link">Ver Tutorial <i data-lucide="external-link"></i></span>
+                    </a>
+                    <a href="https://github.com/sandeco/prompts" target="_blank" class="prompt-card">
+                        <div class="prompt-card-icon"><i data-lucide="lightbulb"></i></div>
+                        <h3>Exemplos de prompts</h3>
+                        <p>Explore uma coleção de exemplos prontos para usar.</p>
+                        <span class="btn-link">Ver Exemplos <i data-lucide="external-link"></i></span>
+                    </a>
+                </div>
             </div>
         </section>
 
-        <!-- Main Screen -->
-        <section id="mainScreen" class="screen">
-            <h1>Edu<span>Sprunki</span></h1>
-            <p class="main-subtitle">Escolha uma disciplina para começar!</p>
-            <div class="btn-container">
-                <button class="btn btn-math" onclick="showTopics('mathematics')">
-                    <i data-lucide="calculator"></i>
-                    Matemática
-                </button>
-                <button class="btn btn-portuguese" onclick="showTopics('portuguese')">
-                    <i data-lucide="book-open"></i>
-                    Português
-                </button>
+        <!-- Documentation Section (Old Content) -->
+        <section id="documentationSection" class="main-section">
+            <!-- Back Button -->
+            <button id="backBtn" class="back-btn" style="display: none;">
+                <i data-lucide="arrow-left"></i> Voltar
+            </button>
+
+            <!-- Login Screen -->
+            <section id="loginScreen" class="screen active">
+                <div class="glass-panel">
+                    <h1>Olá! Qual o seu <span>nome</span>?</h1>
+                    <input type="text" id="userNameInput" placeholder="Digite seu nome...">
+                    <br>
+                    <button class="btn btn-math" onclick="startGame()">
+                        <i data-lucide="play"></i>
+                        Vamos Jogar!
+                    </button>
+                </div>
+            </section>
+
+            <!-- Main Screen -->
+            <section id="mainScreen" class="screen">
+                <h1>Edu<span>Sprunki</span></h1>
+                <p class="main-subtitle">Escolha uma disciplina para começar!</p>
+                <div class="btn-container">
+                    <button class="btn btn-math" onclick="showTopics('mathematics')">
+                        <i data-lucide="calculator"></i>
+                        Matemática
+                    </button>
+                    <button class="btn btn-portuguese" onclick="showTopics('portuguese')">
+                        <i data-lucide="book-open"></i>
+                        Português
+                    </button>
+                </div>
+            </section>
+
+            <!-- Topics Screen -->
+            <section id="topicsScreen" class="screen">
+                <h1 id="subjectTitle">Tópicos</h1>
+                <div id="topicsGrid" class="topic-grid">
+                    <!-- Topics will be injected here -->
+                </div>
+            </section>
+
+            <!-- Game Screen -->
+            <section id="gameScreen" class="screen">
+                <div id="scoreBadge" class="score-badge">
+                    <i data-lucide="star" style="fill: var(--math);"></i>
+                    <span id="scoreValue">0</span> Pontos
+                </div>
+                <h1 id="gameTopicTitle" class="game-topic-title">Tópico</h1>
+                <p class="game-instruction">Arraste a carta até o quadro com o seu nome</p>
+                
+                <div class="game-stage" id="characterStage">
+                    <!-- 7 characters -->
+                    <div class="character-slot" data-index="0">
+                        <div class="user-name-tag"></div>
+                        <div class="character-sprite"></div>
+                    </div>
+                    <div class="character-slot" data-index="1">
+                        <div class="user-name-tag"></div>
+                        <div class="character-sprite"></div>
+                    </div>
+                    <div class="character-slot" data-index="2">
+                        <div class="user-name-tag"></div>
+                        <div class="character-sprite"></div>
+                    </div>
+                    <div class="character-slot" data-index="3">
+                        <div class="user-name-tag"></div>
+                        <div class="character-sprite"></div>
+                    </div>
+                    <div class="character-slot" data-index="4">
+                        <div class="user-name-tag"></div>
+                        <div class="character-sprite"></div>
+                    </div>
+                    <div class="character-slot" data-index="5">
+                        <div class="user-name-tag"></div>
+                        <div class="character-sprite"></div>
+                    </div>
+                    <div class="character-slot" data-index="6">
+                        <div class="user-name-tag"></div>
+                        <div class="character-sprite"></div>
+                    </div>
+                </div>
+
+                <div class="toolbox" id="toolbox">
+                    <!-- Tools injected here -->
+                </div>
+            </section>
+
+            <!-- Concept Card (Visual Explanation) -->
+            <div id="conceptCard" class="concept-card">
+                <h2 id="cardTitle" class="card-title">Título</h2>
+                <div id="diagramContainer" class="diagram-container">
+                    <!-- Diagrams will be injected here -->
+                </div>
+                <p class="close-hint">Clique em qualquer lugar para continuar jogando!</p>
             </div>
         </section>
-
-        <!-- Topics Screen -->
-        <section id="topicsScreen" class="screen">
-            <h1 id="subjectTitle">Tópicos</h1>
-            <div id="topicsGrid" class="topic-grid">
-                <!-- Topics will be injected here -->
-            </div>
-        </section>
-
-        <!-- Game Screen -->
-        <section id="gameScreen" class="screen">
-            <div id="scoreBadge" class="score-badge">
-                <i data-lucide="star" style="fill: var(--math);"></i>
-                <span id="scoreValue">0</span> Pontos
-            </div>
-            <h1 id="gameTopicTitle" class="game-topic-title">Tópico</h1>
-            <p class="game-instruction">Arraste a carta até o quadro com o seu nome</p>
-            
-            <div class="game-stage" id="characterStage">
-                <!-- 7 characters -->
-                <div class="character-slot" data-index="0">
-                    <div class="user-name-tag"></div>
-                    <div class="character-sprite"></div>
-                </div>
-                <div class="character-slot" data-index="1">
-                    <div class="user-name-tag"></div>
-                    <div class="character-sprite"></div>
-                </div>
-                <div class="character-slot" data-index="2">
-                    <div class="user-name-tag"></div>
-                    <div class="character-sprite"></div>
-                </div>
-                <div class="character-slot" data-index="3">
-                    <div class="user-name-tag"></div>
-                    <div class="character-sprite"></div>
-                </div>
-                <div class="character-slot" data-index="4">
-                    <div class="user-name-tag"></div>
-                    <div class="character-sprite"></div>
-                </div>
-                <div class="character-slot" data-index="5">
-                    <div class="user-name-tag"></div>
-                    <div class="character-sprite"></div>
-                </div>
-                <div class="character-slot" data-index="6">
-                    <div class="user-name-tag"></div>
-                    <div class="character-sprite"></div>
-                </div>
-            </div>
-
-            <div class="toolbox" id="toolbox">
-                <!-- Tools injected here -->
-            </div>
-        </section>
-
-        <!-- Concept Card (Visual Explanation) -->
-        <div id="conceptCard" class="concept-card">
-            <h2 id="cardTitle" class="card-title">Título</h2>
-            <div id="diagramContainer" class="diagram-container">
-                <!-- Diagrams will be injected here -->
-            </div>
-            <p class="close-hint">Clique em qualquer lugar para continuar jogando!</p>
-        </div>
 
     </div>
 
