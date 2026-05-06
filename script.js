@@ -257,6 +257,12 @@ let userName = '';
 let score = 0;
 let transformationCount = 0;
 
+const characterFiles = [
+    'brud.png', 'durple.png', 'garnold.png', 'gray.png', 
+    'jevin.png', 'mrsun.png', 'oren.jpg', 'pinki.png', 
+    'raddy.png', 'simon.png', 'vineria.png', 'wenda.png'
+];
+
 // Game Logic
 function startGame() {
     const input = document.getElementById('userNameInput');
@@ -265,6 +271,12 @@ function startGame() {
         return;
     }
     userName = input.value.trim();
+    
+    // Set user name in all card tags
+    document.querySelectorAll('.user-name-tag').forEach(tag => {
+        tag.innerText = userName;
+    });
+
     document.getElementById('loginScreen').classList.remove('active');
     document.getElementById('mainScreen').classList.add('active');
     speak(`Olá ${userName}! Estou muito feliz em jogar com você. Escolha uma disciplina para começar!`);
@@ -342,9 +354,15 @@ function showTopics(subject) {
 function resetGame() {
     const slots = document.querySelectorAll('.character-slot');
     slots.forEach(slot => {
-        const img = slot.querySelector('img');
-        img.src = 'assets/base.png';
-        slot.classList.remove('anim-bounce');
+        const sprite = slot.querySelector('.character-sprite');
+        
+        // Pick a random character file
+        const randomChar = characterFiles[Math.floor(Math.random() * characterFiles.length)];
+        sprite.style.backgroundImage = `url('assets/${randomChar}')`;
+        
+        sprite.style.opacity = "0"; // Ensure it's hidden initially
+        sprite.style.filter = "none"; // Reset filter
+        slot.classList.remove('anim-bounce', 'transformed');
     });
 }
 
@@ -362,10 +380,22 @@ function setupToolbox(topic) {
         label.className = 'tool-label';
         label.innerText = topic.name;
         item.appendChild(label);
+        
         item.addEventListener('dragstart', handleDragStart);
+        
+        // Mobile/Click support
+        item.addEventListener('click', () => {
+            document.querySelectorAll('.tool-item').forEach(t => t.classList.remove('selected'));
+            item.classList.add('selected');
+            selectedToolForClick = item;
+            speak(topic.name);
+        });
+        
         toolbox.appendChild(item);
     }
 }
+
+let selectedToolForClick = null;
 
 // Drag and Drop
 let draggedTool = null;
@@ -383,14 +413,26 @@ slotsElements.forEach(slot => {
         slot.classList.remove('drag-over');
         applyToolToCharacter(slot);
     });
+    
+    // Mobile/Click support
+    slot.addEventListener('click', () => {
+        if (selectedToolForClick) {
+            applyToolToCharacter(slot);
+            selectedToolForClick.classList.remove('selected');
+            selectedToolForClick = null;
+        }
+    });
 });
 
 function applyToolToCharacter(slot) {
     if (slot.classList.contains('anim-bounce')) return; // Already transformed
 
-    const img = slot.querySelector('img');
-    img.src = currentSubject === 'mathematics' ? 'assets/math.png' : 'assets/portuguese.png';
-    slot.classList.add('anim-bounce');
+    const sprite = slot.querySelector('.character-sprite');
+    slot.classList.add('anim-bounce', 'transformed');
+    
+    sprite.style.opacity = "1"; // Show the character
+    // Optional: add visual feedback that it's transformed
+    sprite.style.filter = "drop-shadow(0 0 15px var(--primary)) brightness(1.2)";
     
     transformationCount++;
     
@@ -488,24 +530,16 @@ function showQuizCard(topic) {
     diagramContainer.innerHTML = '';
     
     const questionText = document.createElement('p');
-    questionText.style.fontSize = '1.8rem';
-    questionText.style.fontWeight = '600';
-    questionText.style.marginBottom = '2rem';
+    questionText.className = 'quiz-question';
     questionText.innerText = quiz.text.replace('{name}', userName);
     diagramContainer.appendChild(questionText);
     
     const optionsContainer = document.createElement('div');
-    optionsContainer.style.display = 'flex';
-    optionsContainer.style.flexDirection = 'column';
-    optionsContainer.style.gap = '1rem';
-    optionsContainer.style.width = '100%';
+    optionsContainer.className = 'quiz-options';
     
     quiz.options.forEach((opt, idx) => {
         const btn = document.createElement('button');
-        btn.className = 'topic-btn';
-        btn.style.width = '100%';
-        btn.style.padding = '1.5rem';
-        btn.style.fontSize = '1.4rem';
+        btn.className = 'topic-btn quiz-opt-btn';
         btn.innerText = opt;
         btn.onclick = (e) => {
             e.stopPropagation();
@@ -517,8 +551,7 @@ function showQuizCard(topic) {
                 conceptCard.classList.remove('active');
             } else {
                 speak(`Quase lá ${userName}! Tente de novo!`);
-                btn.style.borderColor = 'red';
-                btn.style.color = 'red';
+                btn.classList.add('wrong-answer');
             }
         };
         optionsContainer.appendChild(btn);
@@ -555,3 +588,4 @@ document.addEventListener('click', (e) => {
 
 // Initialize
 lucide.createIcons();
+resetGame();
