@@ -23,8 +23,9 @@
 body {
     background-color: var(--bg);
     color: var(--text);
-    overflow: hidden;
-    height: 100dvh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    min-height: 100dvh;
     width: 100vw;
     display: flex;
     justify-content: center;
@@ -61,10 +62,10 @@ body {
 /* Screens */
 .screen {
     position: absolute;
-    top: 0;
+    top: 70px; /* Start below navbar */
     left: 0;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 70px); /* Remaining height */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -74,6 +75,7 @@ body {
     opacity: 0;
     pointer-events: none;
     transform: translateY(20px);
+    overflow-y: auto;
 }
 
 .screen.active {
@@ -827,8 +829,9 @@ h1 span {
 .main-section {
     display: none;
     width: 100%;
-    height: 100%;
-    padding-top: 70px; /* Offset for nav */
+    height: 100dvh;
+    position: relative;
+    overflow: hidden; /* Screens will handle their own scroll */
 }
 
 .main-section.active {
@@ -936,9 +939,7 @@ h1 span {
 }
 
 /* Adjustments for existing screens when inside section */
-#documentationSection .screen {
-    padding-top: 0;
-}
+/* Remove problematic override */
 
 /* Ensure background layer is behind everything */
 .background-layer {
