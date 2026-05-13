@@ -248,6 +248,96 @@ const topicsData = {
                 }
             }
         ]
+    },
+    english: {
+        title: "Inglês",
+        color: "var(--english)",
+        items: [
+            { 
+                id: "biography", name: "Social Studies: Biography", icon: "user-plus", 
+                concept: "Biography and Autobiography!",
+                details: [
+                    { icon: "user", label: "Biography", voice: "A biography is a story about someone else's life." },
+                    { icon: "user-check", label: "Autobiography", voice: "An autobiography is a story about your own life." },
+                    { icon: "calendar", label: "Timeline", voice: "A timeline shows the order of events in a life." }
+                ],
+                question: {
+                    text: "{name}, what is an autobiography?",
+                    options: ["A story about yourself", "A story about a cat", "A story about someone else"],
+                    correct: 0
+                }
+            },
+            { 
+                id: "past", name: "ELA: Simple Past", icon: "history", 
+                concept: "Simple Past!",
+                details: [
+                    { text: "+ed", label: "Regular Verbs", voice: "We add 'ed' to many verbs in the past, like 'played' and 'walked'." },
+                    { icon: "calendar", label: "Yesterday", voice: "Yesterday is a word that tells us it happened before." },
+                    { icon: "check-circle", label: "Finished", voice: "Simple past is for actions that are already finished." }
+                ],
+                question: {
+                    text: "{name}, how do we usually change a regular verb to the past?",
+                    options: ["Add 'ing'", "Add 'ed'", "Add 's'"],
+                    correct: 1
+                }
+            },
+            { 
+                id: "volcanoes", name: "Earthquakes and Volcanoes", icon: "flame", 
+                concept: "Earthquakes and Volcanoes!",
+                details: [
+                    { icon: "thermometer", label: "Magma", voice: "Magma is hot liquid rock inside the Earth." },
+                    { icon: "zap", label: "Lava", voice: "Lava is the magma that comes out of a volcano." },
+                    { icon: "layers", label: "Tectonic Plates", voice: "Tectonic plates are moving pieces of the Earth's surface." }
+                ],
+                question: {
+                    text: "{name}, what is the hot liquid called when it comes out of a volcano?",
+                    options: ["Water", "Ice", "Lava"],
+                    correct: 2
+                }
+            },
+            { 
+                id: "richter", name: "Richter Scale", icon: "activity", 
+                concept: "Richter Scale!",
+                details: [
+                    { icon: "bar-chart-2", label: "Magnitude", voice: "Magnitude tells us the size of an earthquake." },
+                    { icon: "wave-pulse", label: "Seismograph", voice: "A seismograph is a machine that measures ground movement." },
+                    { text: "1-10", label: "Intensity", voice: "The scale goes from one to ten to show intensity." }
+                ],
+                question: {
+                    text: "{name}, what does the Richter scale measure?",
+                    options: ["Temperature", "Earthquake strength", "Wind speed"],
+                    correct: 1
+                }
+            },
+            { 
+                id: "atmosphere", name: "Atmosphere Composition", icon: "wind", 
+                concept: "Atmosphere Composition!",
+                details: [
+                    { text: "78%", label: "Nitrogen", voice: "Nitrogen is the most common gas in our atmosphere." },
+                    { text: "21%", label: "Oxygen", voice: "Oxygen is the gas we need to breathe." },
+                    { icon: "cloud", label: "Atmosphere", voice: "The atmosphere is the layer of gases around Earth." }
+                ],
+                question: {
+                    text: "{name}, which gas is the most common in the atmosphere?",
+                    options: ["Oxygen", "Nitrogen", "Carbon Dioxide"],
+                    correct: 1
+                }
+            },
+            { 
+                id: "changes", name: "Changes in Atmosphere", icon: "refresh-cw", 
+                concept: "Changes in Atmosphere!",
+                details: [
+                    { icon: "sun", label: "Natural", voice: "Natural changes are caused by nature, like volcanoes and solar cycles." },
+                    { icon: "factory", label: "Anthropic", voice: "Anthropic changes are caused by humans, like pollution from cars." },
+                    { icon: "thermometer-sun", label: "Greenhouse", voice: "The greenhouse effect helps keep our planet warm." }
+                ],
+                question: {
+                    text: "{name}, is pollution from factories a natural or anthropic change?",
+                    options: ["Natural", "Anthropic", "Neither"],
+                    correct: 1
+                }
+            }
+        ]
     }
 };
 
@@ -287,7 +377,10 @@ function startGame() {
 
     document.getElementById('loginScreen').classList.remove('active');
     document.getElementById('mainScreen').classList.add('active');
-    speak(`Olá ${userName}! Estou muito feliz em jogar com você. Escolha uma disciplina para começar!`);
+    
+    // Affective Welcome
+    const welcomeMsg = `Olá ${userName}! Que bom que você está aqui. Eu preparei tudo com muito carinho para nós aprendermos juntos. Qual disciplina vamos explorar hoje?`;
+    speak(welcomeMsg);
 }
 
 function selectTopic(topic) {
@@ -305,8 +398,8 @@ function speak(text) {
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = 'pt-BR';
-        utterance.rate = 0.9;
-        utterance.pitch = 1.1;
+        utterance.rate = 0.85; // Slightly slower for better clarity and affection
+        utterance.pitch = 1.2; // Slightly higher for a friendlier tone
         window.speechSynthesis.speak(utterance);
     }
 }
@@ -346,7 +439,14 @@ function showTopics(subject) {
     const data = topicsData[subject];
     subjectTitle.innerText = data.title;
     subjectTitle.style.color = data.color;
-    speak(`Legal! Escolha um tópico de ${data.title}.`);
+    
+    let welcome;
+    if (subject === 'english') {
+        welcome = `Welcome! Vamos aprender inglês juntos com muita alegria. Escolha um assunto!`;
+    } else {
+        welcome = `Legal! Escolha um tópico de ${data.title}.`;
+    }
+    speak(welcome);
     
     topicsGrid.innerHTML = '';
     data.items.forEach(item => {
@@ -382,7 +482,16 @@ function setupToolbox(topic) {
         item.draggable = true;
         item.dataset.toolId = i;
         const img = document.createElement('img');
-        img.src = currentSubject === 'mathematics' ? 'assets/math.png' : 'assets/portuguese.png';
+        
+        // Dynamic icon based on subject
+        if (currentSubject === 'mathematics') {
+            img.src = 'assets/math.png';
+        } else if (currentSubject === 'portuguese') {
+            img.src = 'assets/portuguese.png';
+        } else {
+            img.src = 'assets/english.png';
+        }
+        
         item.appendChild(img);
         const label = document.createElement('div');
         label.className = 'tool-label';
@@ -720,3 +829,17 @@ function showSection(sectionId) {
 // Initialize
 lucide.createIcons();
 resetGame();
+
+function toggleMusic() {
+    const music = document.getElementById('bgMusic');
+    const btn = document.getElementById('musicToggle');
+    if (music.paused) {
+        music.play();
+        music.volume = 0.3;
+        btn.innerHTML = '<i data-lucide="volume-x"></i> Parar Música';
+    } else {
+        music.pause();
+        btn.innerHTML = '<i data-lucide="volume-2"></i> Música';
+    }
+    lucide.createIcons();
+}

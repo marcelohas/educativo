@@ -8,6 +8,7 @@
     --text: #2D3436;
     --math: #FF9F43;
     --portuguese: #54A0FF;
+    --english: #9b59b6;
     --glass: rgba(255, 255, 255, 0.8);
     --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -146,6 +147,7 @@ h1 span {
 
 .btn-math { color: var(--math); border-color: var(--math); }
 .btn-portuguese { color: var(--portuguese); border-color: var(--portuguese); }
+.btn-english { color: var(--english); border-color: var(--english); }
 
 /* Topic Grid */
 .topic-grid {

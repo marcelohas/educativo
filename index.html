@@ -14,8 +14,13 @@
             <li><a href="#" onclick="showSection('home')"><i data-lucide="home"></i> Início</a></li>
             <li><a href="#" onclick="showSection('prompts')"><i data-lucide="terminal"></i> Prompts</a></li>
             <li><a href="#" onclick="showSection('docs')"><i data-lucide="book"></i> Documentação</a></li>
+            <li><a href="#" id="musicToggle" onclick="toggleMusic()"><i data-lucide="volume-2"></i> Música</a></li>
         </ul>
     </nav>
+
+    <audio id="bgMusic" loop>
+        <source src="https://assets.mixkit.co/music/preview/mixkit-sun-and-clouds-585.mp3" type="audio/mpeg">
+    </audio>
 
     <div id="app">
         <div class="background-layer"></div>
@@ -88,6 +93,10 @@
                     <button class="btn btn-portuguese" onclick="showTopics('portuguese')">
                         <i data-lucide="book-open"></i>
                         Português
+                    </button>
+                    <button class="btn btn-english" onclick="showTopics('english')">
+                        <i data-lucide="languages"></i>
+                        Inglês
                     </button>
                 </div>
             </section>
