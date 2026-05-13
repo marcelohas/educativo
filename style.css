@@ -586,7 +586,7 @@ h1 span {
 /* Back Button */
 .back-btn {
     position: absolute;
-    top: calc(70px + 1.5rem);
+    top: 110px;
     left: 2rem;
     background: var(--glass);
     border: none;
@@ -598,7 +598,7 @@ h1 span {
     align-items: center;
     gap: 0.5rem;
     box-shadow: var(--shadow);
-    z-index: 2000; /* Ensure it stays above EVERYTHING in the section */
+    z-index: 2001; /* Above navbar */
 }
 
 .back-btn:hover {
@@ -607,14 +607,14 @@ h1 span {
 
 @media (max-width: 768px) {
     .back-btn {
-        top: calc(70px + 0.5rem);
+        top: 90px;
         left: 1rem;
         padding: 0.5rem 1rem;
         font-size: 0.9rem;
     }
     
     #scoreBadge {
-        top: calc(70px + 0.5rem) !important;
+        top: 90px !important;
         right: 1rem !important;
         padding: 0.5rem 1rem !important;
         font-size: 1rem !important;
@@ -680,7 +680,7 @@ h1 span {
 
 .score-badge {
     position: absolute;
-    top: calc(70px + 1.5rem);
+    top: 110px;
     right: 2rem;
     background: white;
     padding: 1rem 2rem;
