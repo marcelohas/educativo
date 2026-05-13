@@ -874,10 +874,8 @@ function showSection(sectionId) {
     // Show target section
     if (sectionId === 'home') {
         document.getElementById('homeSection').classList.add('active');
-    } else if (sectionId === 'prompts') {
-        document.getElementById('promptsSection').classList.add('active');
-    } else if (sectionId === 'docs') {
-        document.getElementById('documentationSection').classList.add('active');
+    } else if (sectionId === 'game') {
+        document.getElementById('gameSection').classList.add('active');
     }
     
     // Re-create icons for the new section content

@@ -12,8 +12,6 @@
         <div class="nav-logo">Edu<span>Sprunki</span></div>
         <ul class="nav-links">
             <li><a href="#" onclick="showSection('home')"><i data-lucide="home"></i> Início</a></li>
-            <li><a href="#" onclick="showSection('prompts')"><i data-lucide="terminal"></i> Prompts</a></li>
-            <li><a href="#" onclick="showSection('docs')"><i data-lucide="book"></i> Documentação</a></li>
             <li><a href="#" id="musicToggle" onclick="toggleMusic()"><i data-lucide="volume-2"></i> Música</a></li>
         </ul>
     </nav>
@@ -31,7 +29,7 @@
                 <h1>Bem-vindo ao <span>EduSprunki</span></h1>
                 <p class="main-subtitle">Uma jornada educativa divertida e interativa!</p>
                 <div class="hero-actions">
-                    <button class="btn btn-math" onclick="showSection('docs')">
+                    <button class="btn btn-math" onclick="showSection('game')">
                         <i data-lucide="play-circle"></i>
                         Começar Agora
                     </button>
@@ -39,30 +37,10 @@
             </div>
         </section>
 
-        <!-- Prompts Section -->
-        <section id="promptsSection" class="main-section">
-            <div class="glass-panel">
-                <h1>Guia de <span>Prompts</span></h1>
-                <p class="main-subtitle">Aprenda a criar e veja exemplos de prompts poderosos.</p>
-                <div class="prompts-grid">
-                    <a href="https://imcampos195.github.io/MyMumblings/Tutorial-PT-BR.html" target="_blank" class="prompt-card">
-                        <div class="prompt-card-icon"><i data-lucide="pen-tool"></i></div>
-                        <h3>Como escrever prompts</h3>
-                        <p>Aprenda técnicas e dicas para escrever prompts eficientes.</p>
-                        <span class="btn-link">Ver Tutorial <i data-lucide="external-link"></i></span>
-                    </a>
-                    <a href="https://github.com/sandeco/prompts" target="_blank" class="prompt-card">
-                        <div class="prompt-card-icon"><i data-lucide="lightbulb"></i></div>
-                        <h3>Exemplos de prompts</h3>
-                        <p>Explore uma coleção de exemplos prontos para usar.</p>
-                        <span class="btn-link">Ver Exemplos <i data-lucide="external-link"></i></span>
-                    </a>
-                </div>
-            </div>
-        </section>
 
-        <!-- Documentation Section (Old Content) -->
-        <section id="documentationSection" class="main-section">
+
+        <!-- Game Section -->
+        <section id="gameSection" class="main-section">
             <!-- Back Button -->
             <button id="backBtn" class="back-btn" style="display: none;">
                 <i data-lucide="arrow-left"></i> Voltar
