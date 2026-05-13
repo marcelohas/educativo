@@ -784,7 +784,7 @@ h1 span {
 .speaking-active {
     box-shadow: 0 0 25px var(--speaking) !important;
     border-color: var(--speaking) !important;
-    transform: scale(1.05) !important;
+    /* Removed transform scale to prevent card from appearing when hidden */
 }
 
 @keyframes speaking-pulse {
@@ -795,6 +795,16 @@ h1 span {
 
 .character-slot.speaking {
     animation: speaking-pulse 1.5s infinite;
+}
+
+.speaking-pulse-logo {
+    animation: logo-pulse 1s infinite alternate;
+    color: var(--speaking) !important;
+}
+
+@keyframes logo-pulse {
+    from { transform: scale(1); filter: drop-shadow(0 0 0px var(--speaking)); }
+    to { transform: scale(1.1); filter: drop-shadow(0 0 10px var(--speaking)); }
 }
 
 /* Navigation */

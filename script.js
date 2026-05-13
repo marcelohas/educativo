@@ -419,10 +419,14 @@ function speak(text) {
         }
         
         utterance.onstart = () => {
-            conceptCard.classList.add('speaking-active');
+            if (conceptCard.classList.contains('active')) {
+                conceptCard.classList.add('speaking-active');
+            }
+            document.querySelector('.nav-logo').classList.add('speaking-pulse-logo');
         };
         utterance.onend = () => {
             conceptCard.classList.remove('speaking-active');
+            document.querySelector('.nav-logo').classList.remove('speaking-pulse-logo');
         };
         
         window.speechSynthesis.speak(utterance);
