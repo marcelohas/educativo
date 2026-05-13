@@ -397,9 +397,17 @@ function speak(text) {
     if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'pt-BR';
-        utterance.rate = 0.85; // Slightly slower for better clarity and affection
-        utterance.pitch = 1.2; // Slightly higher for a friendlier tone
+        
+        // Use English for English subject, Portuguese for others
+        if (currentSubject === 'english') {
+            utterance.lang = 'en-US';
+            utterance.rate = 0.8; // Slightly slower for language learning
+        } else {
+            utterance.lang = 'pt-BR';
+            utterance.rate = 0.85;
+        }
+        
+        utterance.pitch = 1.2;
         window.speechSynthesis.speak(utterance);
     }
 }
@@ -442,7 +450,7 @@ function showTopics(subject) {
     
     let welcome;
     if (subject === 'english') {
-        welcome = `Welcome! Vamos aprender inglês juntos com muita alegria. Escolha um assunto!`;
+        welcome = `Welcome ${userName}! Let's learn English together. Pick a topic!`;
     } else {
         welcome = `Legal! Escolha um tópico de ${data.title}.`;
     }
@@ -456,6 +464,28 @@ function showTopics(subject) {
         btn.onclick = () => selectTopic(item);
         topicsGrid.appendChild(btn);
     });
+    const instruction = document.querySelector('.game-instruction');
+    const scoreBadge = document.getElementById('scoreBadge');
+    const backBtn = document.getElementById('backBtn');
+    
+    if (subject === 'english') {
+        instruction.innerText = "Drag the card to the frame with your name";
+        scoreBadge.innerHTML = `<i data-lucide="star" style="fill: var(--math);"></i> <span id="scoreValue">${score}</span> Points`;
+        backBtn.innerHTML = `<i data-lucide="arrow-left"></i> Back`;
+    } else {
+        instruction.innerText = "Arraste a carta até o quadro com o seu nome";
+        scoreBadge.innerHTML = `<i data-lucide="star" style="fill: var(--math);"></i> <span id="scoreValue">${score}</span> Pontos`;
+        backBtn.innerHTML = `<i data-lucide="arrow-left"></i> Voltar`;
+    }
+    lucide.createIcons();
+    
+    const hint = document.querySelector('.close-hint');
+    if (subject === 'english') {
+        hint.innerText = "Click anywhere to keep playing!";
+    } else {
+        hint.innerText = "Clique em qualquer lugar para continuar jogando!";
+    }
+    
     showScreen(topicsScreen);
 }
 
@@ -735,7 +765,10 @@ function showConceptCard(topic) {
         conceptCard.classList.add('active');
         lucide.createIcons();
         
-        const congrats = [`${userName}, olha que legal!`, `Muito bem ${userName}!`, `Veja só ${userName}!`];
+        const congrats = currentSubject === 'english' ? 
+            [`${userName}, look how cool!`, `Very well ${userName}!`, `Look at this ${userName}!`] :
+            [`${userName}, olha que legal!`, `Muito bem ${userName}!`, `Veja só ${userName}!`];
+            
         const randomCongrats = congrats[Math.floor(Math.random() * congrats.length)];
         
         speak(`${randomCongrats} ${detail.voice || topic.concept}`);
@@ -744,7 +777,7 @@ function showConceptCard(topic) {
 
 function showQuizCard(topic) {
     const quiz = topic.question;
-    cardTitle.innerText = "Desafio Final!";
+    cardTitle.innerText = currentSubject === 'english' ? "Final Challenge!" : "Desafio Final!";
     diagramContainer.innerHTML = '';
     
     const questionText = document.createElement('p');
@@ -765,10 +798,16 @@ function showQuizCard(topic) {
                 score += 50;
                 scoreValue.innerText = score;
                 createConfetti();
-                speak(`Parabéns ${userName}! Você acertou e ganhou 50 pontos!`);
+                const msg = currentSubject === 'english' ? 
+                    `Congratulations ${userName}! You got it right and earned 50 points!` :
+                    `Parabéns ${userName}! Você acertou e ganhou 50 pontos!`;
+                speak(msg);
                 conceptCard.classList.remove('active');
             } else {
-                speak(`Quase lá ${userName}! Tente de novo!`);
+                const msg = currentSubject === 'english' ?
+                    `Almost there ${userName}! Try again!` :
+                    `Quase lá ${userName}! Tente de novo!`;
+                speak(msg);
                 btn.classList.add('wrong-answer');
             }
         };
