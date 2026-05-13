@@ -42,14 +42,14 @@ body {
 
 #app {
     width: 100%;
-    height: 100%;
+    height: 100dvh;
     position: relative;
     overflow: hidden;
 }
 
 /* Background Layer */
 .background-layer {
-    position: absolute;
+    position: fixed; /* Fixed background for better mobile performance */
     top: 0;
     left: 0;
     width: 100%;
@@ -64,26 +64,26 @@ body {
 /* Screens */
 .screen {
     position: absolute;
-    top: 70px; /* Start below navbar */
+    top: 110px;
     left: 0;
     width: 100%;
-    height: calc(100% - 70px); /* Remaining height */
+    height: calc(100% - 110px);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 2rem;
-    transition: var(--transition);
+    padding: 1.5rem;
+    transition: opacity 0.3s ease;
     opacity: 0;
     pointer-events: none;
-    transform: translateY(20px);
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .screen.active {
     opacity: 1;
     pointer-events: all;
-    transform: translateY(0);
+    z-index: 100;
 }
 
 /* Title Styling */

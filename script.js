@@ -866,16 +866,18 @@ document.addEventListener('click', (e) => {
 
 // Section Navigation
 function showSection(sectionId) {
+    console.log('Switching to section:', sectionId);
     // Hide all main sections
     document.querySelectorAll('.main-section').forEach(section => {
         section.classList.remove('active');
     });
 
     // Show target section
-    if (sectionId === 'home') {
-        document.getElementById('homeSection').classList.add('active');
-    } else if (sectionId === 'game') {
-        document.getElementById('gameSection').classList.add('active');
+    const target = document.getElementById(sectionId + 'Section');
+    if (target) {
+        target.classList.add('active');
+    } else {
+        console.warn('Section not found:', sectionId + 'Section');
     }
     
     // Re-create icons for the new section content
