@@ -393,21 +393,38 @@ function selectTopic(topic) {
 }
 
 // Speech Synthesis
+let voices = [];
+function loadVoices() {
+    voices = window.speechSynthesis.getVoices();
+}
+window.speechSynthesis.onvoiceschanged = loadVoices;
+loadVoices();
+
 function speak(text) {
     if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
         
-        // Use English for English subject, Portuguese for others
-        if (currentSubject === 'english') {
-            utterance.lang = 'en-US';
-            utterance.rate = 0.8; // Slightly slower for language learning
-        } else {
-            utterance.lang = 'pt-BR';
-            utterance.rate = 0.85;
+        let targetLang = currentSubject === 'english' ? 'en-US' : 'pt-BR';
+        utterance.lang = targetLang;
+        utterance.rate = currentSubject === 'english' ? 0.8 : 0.85;
+        utterance.pitch = 1.2;
+
+        // Try to find a "Natural" or "Google" voice for the target language
+        const bestVoice = voices.find(v => v.lang.includes(targetLang) && (v.name.includes('Natural') || v.name.includes('Google'))) 
+                       || voices.find(v => v.lang.includes(targetLang));
+        
+        if (bestVoice) {
+            utterance.voice = bestVoice;
         }
         
-        utterance.pitch = 1.2;
+        utterance.onstart = () => {
+            conceptCard.classList.add('speaking-active');
+        };
+        utterance.onend = () => {
+            conceptCard.classList.remove('speaking-active');
+        };
+        
         window.speechSynthesis.speak(utterance);
     }
 }
